@@ -13,8 +13,8 @@ class User(models.Model):
         default=uuid.uuid4,
         editable=False
     )
-    first_name = models.CharField(max_length=35)
-    last_name = models.CharField(max_length=35)
+    first_name = models.CharField(max_length=127)
+    last_name = models.CharField(max_length=127)
     email = models.EmailField()
     password = models.CharField(max_length=127)
     sex = models.CharField(max_length=1, choices=sexes, blank=True)
@@ -68,7 +68,7 @@ class Exercise(models.Model):
     exercise_id = models.AutoField(
         primary_key=True, editable=False
     )
-    name = models.CharField(max_length=35)
+    name = models.CharField(max_length=127)
     description = models.TextField(blank=True)
 
     def __str__(self):
@@ -97,7 +97,7 @@ class WorkoutTemplate(models.Model):
         default=uuid.uuid4,
         editable=False
     )
-    name = models.CharField(35)
+    name = models.CharField(max_length=127)
     workout_exercises_id = models.ForeignKey(
         'WorkoutTemplateExercise',
         on_delete=models.CASCADE

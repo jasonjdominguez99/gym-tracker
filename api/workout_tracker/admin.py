@@ -67,7 +67,7 @@ admin.site.register(Exercise, ExerciseAdmin)
 admin.site.register(
     UserWorkoutTemplate, UserWorkoutTemplateAdmin
 )
-admin.site.register(WorkoutTemplate, WorkoutAdmin)
+admin.site.register(WorkoutTemplate, WorkoutTemplateAdmin)
 admin.site.register(
     WorkoutTemplateExercise,
     WorkoutTemplateExerciseAdmin

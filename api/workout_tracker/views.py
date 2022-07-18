@@ -12,30 +12,30 @@ from .models import (
     WorkoutTemplate, WorkoutTemplateExercise
 )
 
-class UserView(viewsets.ModekViewSet):
+class UserView(viewsets.ModelViewSet):
     serializer_class = UserSerializer
     queryset = User.objects.all()
 
-class WorkoutLogView(viewsets.ModekViewSet):
+class WorkoutLogView(viewsets.ModelViewSet):
     serializer_class = WorkoutLogSerializer
     queryset = WorkoutLog.objects.all()
 
-class WorkoutView(viewsets.ModekViewSet):
+class WorkoutView(viewsets.ModelViewSet):
     serializer_class = WorkoutSerializer
     queryset = Workout.objects.all()
 
-class ExerciseView(viewsets.ModekViewSet):
+class ExerciseView(viewsets.ModelViewSet):
     serializer_class = ExerciseSerializer
     queryset = Exercise.objects.all()
 
-class UserWorkoutTemplateView(viewsets.ModekViewSet):
+class UserWorkoutTemplateView(viewsets.ModelViewSet):
     serializer_class = UserWorkoutTemplateSerializer
     queryset = UserWorkoutTemplate.objects.all()
 
-class WorkoutTemplateView(viewsets.ModekViewSet):
+class WorkoutTemplateView(viewsets.ModelViewSet):
     serializer_class = WorkoutTemplateSerializer
     queryset = WorkoutTemplate.objects.all()
 
-class WorkoutTemplateExerciseView(viewsets.ModekViewSet):
+class WorkoutTemplateExerciseView(viewsets.ModelViewSet):
     serializer_class = WorkoutTemplateExerciseSerializer
     queryset = WorkoutTemplateExercise.objects.all()
