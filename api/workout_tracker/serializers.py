@@ -1,7 +1,8 @@
 from rest_framework import serializers
 from .models import (
-    User, UserWorkoutTemplate, Workout, WorkoutLog,
-    WorkoutTemplate, WorkoutTemplateExercise, Exercise
+    User, WorkoutLog, Workout, Exercise, 
+    UserWorkoutTemplate,
+    WorkoutTemplate, WorkoutTemplateExercise
 )
 
 class UserSerializer(serializers.ModelSerializer):
@@ -30,7 +31,7 @@ class WorkoutLogSerializer(serializers.ModelSerializer):
        
 class WorkoutSerializer(serializers.ModelSerializer):
     class Meta:
-        model = UserWorkoutTemplate
+        model = Workout
         fields = (
             'workout_id',
             'exercise_id',

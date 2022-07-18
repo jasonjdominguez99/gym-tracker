@@ -1,7 +1,8 @@
 from django.contrib import admin
 from .models import (
-    User, UserWorkoutTemplate, Workout, WorkoutLog,
-    WorkoutTemplate, WorkoutTemplateExercise, Exercise
+    User, WorkoutLog, Workout, Exercise, 
+    UserWorkoutTemplate,
+    WorkoutTemplate, WorkoutTemplateExercise
 )
 
 class UserAdmin(admin.ModelAdmin):
