@@ -19,7 +19,8 @@ from workout_tracker.views import (
     UserView, WorkoutLogView, WorkoutView,
     ExerciseView, UserWorkoutTemplateView,
     WorkoutTemplateView,
-    WorkoutTemplateExerciseView
+    WorkoutTemplateExerciseView,
+    ExerciseMusclesWorkedView
 )
 from rest_framework import routers
 
@@ -42,6 +43,11 @@ router.register(
     r'workout-template-exercises',
     WorkoutTemplateExerciseView,
     'workout_template_exercise'
+)
+router.register(
+    r'exercises-muscles-worked',
+    ExerciseMusclesWorkedView,
+    'exercise_muscles_worked'
 )
 
 

@@ -15,7 +15,7 @@ class User(models.Model):
     )
     first_name = models.CharField(max_length=127)
     last_name = models.CharField(max_length=127)
-    email = models.EmailField()
+    email = models.EmailField(unique=True)
     password = models.CharField(max_length=127)
     sex = models.CharField(max_length=1, choices=sexes, blank=True)
 
@@ -98,22 +98,66 @@ class WorkoutTemplate(models.Model):
         editable=False
     )
     name = models.CharField(max_length=127)
-    workout_exercises_id = models.ForeignKey(
-        'WorkoutTemplateExercise',
-        on_delete=models.CASCADE
-    )
+    description = models.TextField(blank=True)
 
     def __str__(self):
         return self.name
 
 class WorkoutTemplateExercise(models.Model):
-    workout_exercises_id = models.AutoField(
-        primary_key=True, editable=False
+    workout_template_id = models.ForeignKey(
+        'WorkoutTemplate',
+        on_delete=models.CASCADE
     )
     exercise_id = models.ForeignKey(
         'Exercise',
         on_delete=models.CASCADE
     )
 
+    class Meta:
+        unique_together = [
+            'workout_template_id',
+            'exercise_id'
+        ]
+
     def __str__(self):
-        return str(self.workout_exercises_id)
+        return (
+            "Workout template: " + str(self.workout_template_id)
+            + " Exercise: " + str(self.exercise_id)
+        )
+
+class ExerciseMusclesWorked(models.Model):
+    muscles = [
+        'Deltoid', 'Anterior Deltoid', 'Lateral Deltoid',
+        'Posterior Deltoid', 'Biceps', 'Triceps',
+        'Gluteus Maximus', 'Gluteus Medius', 'Quadriceps',
+        'Hamstrings', 'Tibialis Anterior', 'Gastrocnemius',
+        'Soleus', 'Pectoralis Major', 'Rectus Abdominis',
+        'External Oblique', 'Trapezius', 'Rhomboids',
+        'Latissimus Dorsi', 'Erector Spinae'
+    ]
+    muscles = [(muscle, muscle) for muscle in muscles]
+
+    activations = [
+        ('H', 'High'),
+        ('M', 'Moderate'),
+        ('L', 'Low')
+    ]
+
+    exercise_id = models.ForeignKey(
+        'Exercise',
+        on_delete=models.CASCADE
+    )
+    muscle = models.CharField(max_length=127, choices=muscles)
+    activation = models.CharField(max_length=10, choices=activations, default='M')
+
+    class Meta:
+        unique_together = [
+            'exercise_id',
+            'muscle'
+        ]
+
+    def __str__(self):
+        return (
+            "Exercise: " + str(self.exercise_id)
+            + " Muscle worked: " + str(self.muscle)
+        )

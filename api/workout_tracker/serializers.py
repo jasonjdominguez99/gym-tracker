@@ -1,8 +1,10 @@
+from dataclasses import fields
 from rest_framework import serializers
 from .models import (
     User, WorkoutLog, Workout, Exercise, 
     UserWorkoutTemplate,
-    WorkoutTemplate, WorkoutTemplateExercise
+    WorkoutTemplate, WorkoutTemplateExercise,
+    ExerciseMusclesWorked
 )
 
 class UserSerializer(serializers.ModelSerializer):
@@ -63,14 +65,22 @@ class WorkoutTemplateSerializer(serializers.ModelSerializer):
         fields = (
             'workout_template_id',
             'name',
-            'workout_exercises_id'
+            'description'
         )
         
 class WorkoutTemplateExerciseSerializer(serializers.ModelSerializer):
     class Meta:
         model = WorkoutTemplateExercise
         fields = (
-            'workout_exercises_id',
+            'workout_template_id',
             'exercise_id'
         )
         
+class ExerciseMusclesWorkedSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ExerciseMusclesWorked
+        fields = (
+            'exercise_id',
+            'muscle',
+            'activation'
+        )

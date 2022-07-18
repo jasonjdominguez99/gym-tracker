@@ -5,11 +5,13 @@ from .serializers import (
     WorkoutSerializer, UserWorkoutTemplateSerializer,
     ExerciseSerializer, WorkoutTemplateSerializer,
     WorkoutTemplateExerciseSerializer,
+    ExerciseMusclesWorkedSerializer
 )
 from .models import (
     User, WorkoutLog, Workout, Exercise, 
     UserWorkoutTemplate,
-    WorkoutTemplate, WorkoutTemplateExercise
+    WorkoutTemplate, WorkoutTemplateExercise,
+    ExerciseMusclesWorked
 )
 
 class UserView(viewsets.ModelViewSet):
@@ -39,3 +41,7 @@ class WorkoutTemplateView(viewsets.ModelViewSet):
 class WorkoutTemplateExerciseView(viewsets.ModelViewSet):
     serializer_class = WorkoutTemplateExerciseSerializer
     queryset = WorkoutTemplateExercise.objects.all()
+
+class ExerciseMusclesWorkedView(viewsets.ModelViewSet):
+    serializer_class = ExerciseMusclesWorkedSerializer
+    queryset = ExerciseMusclesWorked.objects.all()

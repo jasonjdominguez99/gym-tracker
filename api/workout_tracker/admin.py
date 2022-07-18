@@ -2,7 +2,8 @@ from django.contrib import admin
 from .models import (
     User, WorkoutLog, Workout, Exercise, 
     UserWorkoutTemplate,
-    WorkoutTemplate, WorkoutTemplateExercise
+    WorkoutTemplate, WorkoutTemplateExercise,
+    ExerciseMusclesWorked
 )
 
 class UserAdmin(admin.ModelAdmin):
@@ -51,13 +52,20 @@ class WorkoutTemplateAdmin(admin.ModelAdmin):
     list_display = (
         'workout_template_id',
         'name',
-        'workout_exercises_id'
+        'description'
     )
 
 class WorkoutTemplateExerciseAdmin(admin.ModelAdmin):
     list_display = (
-        'workout_exercises_id',
+        'workout_template_id',
         'exercise_id'
+    )
+
+class ExerciseMusclesWorkedAdmin(admin.ModelAdmin):
+    flist_display = (
+        'exercise_id',
+        'muscle',
+        'activation'
     )
 
 admin.site.register(User, UserAdmin)
@@ -71,4 +79,8 @@ admin.site.register(WorkoutTemplate, WorkoutTemplateAdmin)
 admin.site.register(
     WorkoutTemplateExercise,
     WorkoutTemplateExerciseAdmin
+)
+admin.site.register(
+    ExerciseMusclesWorked,
+    ExerciseMusclesWorkedAdmin
 )
