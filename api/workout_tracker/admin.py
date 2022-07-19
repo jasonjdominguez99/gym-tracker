@@ -1,8 +1,8 @@
 from django.contrib import admin
 from .models import (
-    User, WorkoutLog, Workout, Exercise, 
-    UserWorkoutTemplate,
-    WorkoutTemplate, WorkoutTemplateExercise,
+    User, WeightLog, WorkoutLog, 
+    Workout, Exercise, UserWorkoutPlan,
+    WorkoutPlan, WorkoutPlanExercise,
     ExerciseMusclesWorked
 )
 
@@ -16,14 +16,25 @@ class UserAdmin(admin.ModelAdmin):
         "sex"
     )
 
-class WorkoutLogAdmin(admin.ModelAdmin):
+class WeightLogAdmin(admin.ModelAdmin):
     list_display = (
         'user_id',
-        'workout_template_id',
+        'date',
+        'weight',
+        'units',
+        'time',
+        'notes'
+    )
+
+class WorkoutLogAdmin(admin.ModelAdmin):
+    list_display = (
         'workout_id',
+        'name',
+        'user_id',
         'date',
         'start_time',
-        'end_time'
+        'end_time',
+        'notes'
     )
 
 class WorkoutAdmin(admin.ModelAdmin):
@@ -32,7 +43,9 @@ class WorkoutAdmin(admin.ModelAdmin):
         'exercise_id',
         'set_number',
         'weight',
-        'reps'
+        'units',
+        'reps',
+        'notes'
     )
 
 class ExerciseAdmin(admin.ModelAdmin):
@@ -42,23 +55,26 @@ class ExerciseAdmin(admin.ModelAdmin):
         'description'
     )
 
-class UserWorkoutTemplateAdmin(admin.ModelAdmin):
+class UserWorkoutPlanAdmin(admin.ModelAdmin):
     list_display = (
-        'workout_template_id',
+        'workout_plan_id',
         'user_id'
     )
 
-class WorkoutTemplateAdmin(admin.ModelAdmin):
+class WorkoutPlanAdmin(admin.ModelAdmin):
     list_display = (
-        'workout_template_id',
+        'workout_plan_id',
         'name',
         'description'
     )
 
-class WorkoutTemplateExerciseAdmin(admin.ModelAdmin):
+class WorkoutPlanExerciseAdmin(admin.ModelAdmin):
     list_display = (
-        'workout_template_id',
-        'exercise_id'
+        'workout_plan_id',
+        'exercise_id',
+        'suggested_sets',
+        'suggested_reps_min',
+        'suggested_reps_max'
     )
 
 class ExerciseMusclesWorkedAdmin(admin.ModelAdmin):
@@ -73,12 +89,12 @@ admin.site.register(WorkoutLog, WorkoutLogAdmin)
 admin.site.register(Workout, WorkoutAdmin)
 admin.site.register(Exercise, ExerciseAdmin)
 admin.site.register(
-    UserWorkoutTemplate, UserWorkoutTemplateAdmin
+    UserWorkoutPlan, UserWorkoutPlanAdmin
 )
-admin.site.register(WorkoutTemplate, WorkoutTemplateAdmin)
+admin.site.register(WorkoutPlan, WorkoutPlanAdmin)
 admin.site.register(
-    WorkoutTemplateExercise,
-    WorkoutTemplateExerciseAdmin
+    WorkoutPlanExercise,
+    WorkoutPlanExerciseAdmin
 )
 admin.site.register(
     ExerciseMusclesWorked,

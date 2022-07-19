@@ -1,6 +1,11 @@
 from django.db import models
 import uuid
 
+weight_units = [
+    ('kg', 'kg'),
+    ('lbs', 'lbs')
+]
+
 class User(models.Model):
     sexes = [
         ('M', 'Male'),
@@ -20,49 +25,74 @@ class User(models.Model):
     sex = models.CharField(max_length=1, choices=sexes, blank=True)
 
     def __str__(self):
-        return self.first_name + self.last_name
+        return f"{self.first_name} {self.last_name}"
 
-class WorkoutLog(models.Model):
+class WeightLog(models.Model):
     user_id = models.ForeignKey(
         'User',
         on_delete=models.CASCADE
     )
-    workout_template_id = models.ForeignKey(
-        'WorkoutTemplate',
-        on_delete=models.CASCADE,
-    )
-    workout_id = models.ForeignKey(
-        'Workout',
-        on_delete=models.CASCADE,
-    )
     date = models.DateField()
-    start_time = models.TimeField(blank=True)
-    end_time = models.TimeField(blank=True)
+    weight = models.DecimalField(max_digits=5, decimal_places=2)
+    units = models.CharField(
+        max_length=3, choices=weight_units
+    )
+    time = models.TimeField(blank=True, null=True)
+    notes = models.TextField(blank=True)
 
     class Meta:
         unique_together = [
-            'user_id', 
-            'workout_template_id', 
-            'workout_id'
+            'user_id',
+            'date',
+            'time'
         ]
 
     def __str__(self):
-        return self(self.date)
+        return f"User: {self.user_id} {self.date} \
+                 {self.time}"
 
-class Workout(models.Model):
+class WorkoutLog(models.Model):
     workout_id = models.AutoField(
         primary_key=True, editable=False
+    )
+    name = models.CharField(max_length=127)
+    user_id = models.ForeignKey(
+        'User',
+        on_delete=models.CASCADE
+    )
+    date = models.DateField()
+    start_time = models.TimeField(blank=True, null=True)
+    end_time = models.TimeField(blank=True, null=True)
+    notes = models.TextField(blank=True)
+
+    def __str__(self):
+        return f"{self.user_id}: {self.date} {self.name}"
+
+class Workout(models.Model):
+    workout_id = models.ForeignKey(
+        'WorkoutLog',
+        on_delete=models.CASCADE
     )
     exercise_id = models.ForeignKey(
         'Exercise',
         on_delete=models.CASCADE
     )
     set_number = models.PositiveSmallIntegerField()
-    weight = models.PositiveSmallIntegerField()
+    weight = models.DecimalField(max_digits=5, decimal_places=2)
+    units = models.CharField(max_length=3, choices=weight_units)
     reps = models.PositiveSmallIntegerField()
+    notes = models.TextField(blank=True)
+
+    class Meta:
+        unique_together = [
+            'workout_id',
+            'exercise_id',
+            'set_number'
+        ]
 
     def __str__(self):
-        return str(self.workout_id)
+        return f"{self.workout_id}: {self.exercise_id} \
+                 Set {self.set_number}"
 
 class Exercise(models.Model):
     exercise_id = models.AutoField(
@@ -72,11 +102,11 @@ class Exercise(models.Model):
     description = models.TextField(blank=True)
 
     def __str__(self):
-        return self.name
+        return f"{self.name}"
 
-class UserWorkoutTemplate(models.Model):
-    workout_template_id = models.ForeignKey(
-        'WorkoutTemplate',
+class UserWorkoutPlan(models.Model):
+    workout_plan_id = models.ForeignKey(
+        'WorkoutPlan',
         on_delete=models.CASCADE
     )
     user_id = models.ForeignKey(
@@ -85,14 +115,11 @@ class UserWorkoutTemplate(models.Model):
     )
 
     def __str__(self):
-        return (
-            "User: " + str(self.user_id)
-            + " Workout template: "
-            + str(self.workout_template_id)
-        )
+        return f"User: {self.user_id} \
+                 Workout plan: {self.workout_plan_id}"
 
-class WorkoutTemplate(models.Model):
-    workout_template_id = models.UUIDField(
+class WorkoutPlan(models.Model):
+    workout_plan_id = models.UUIDField(
         primary_key=True,
         default=uuid.uuid4,
         editable=False
@@ -101,29 +128,30 @@ class WorkoutTemplate(models.Model):
     description = models.TextField(blank=True)
 
     def __str__(self):
-        return self.name
+        return f"{self.name}"
 
-class WorkoutTemplateExercise(models.Model):
-    workout_template_id = models.ForeignKey(
-        'WorkoutTemplate',
+class WorkoutPlanExercise(models.Model):
+    workout_plan_id = models.ForeignKey(
+        'WorkoutPlan',
         on_delete=models.CASCADE
     )
     exercise_id = models.ForeignKey(
         'Exercise',
         on_delete=models.CASCADE
     )
+    suggested_sets = models.PositiveSmallIntegerField()
+    suggested_reps_min = models.PositiveSmallIntegerField()
+    suggested_reps_max = models.PositiveSmallIntegerField()
 
     class Meta:
         unique_together = [
-            'workout_template_id',
+            'workout_plan_id',
             'exercise_id'
         ]
 
     def __str__(self):
-        return (
-            "Workout template: " + str(self.workout_template_id)
-            + " Exercise: " + str(self.exercise_id)
-        )
+        return f"Workout plan: {self.workout_plan_id} \
+                 Exercise: {self.exercise_id}"
 
 class ExerciseMusclesWorked(models.Model):
     muscles = [
@@ -157,7 +185,5 @@ class ExerciseMusclesWorked(models.Model):
         ]
 
     def __str__(self):
-        return (
-            "Exercise: " + str(self.exercise_id)
-            + " Muscle worked: " + str(self.muscle)
-        )
+        return f"Exercise: {self.exercise_id} \
+                 Muscle worked: {self.muscle}"

@@ -16,33 +16,35 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from workout_tracker.views import (
-    UserView, WorkoutLogView, WorkoutView,
-    ExerciseView, UserWorkoutTemplateView,
-    WorkoutTemplateView,
-    WorkoutTemplateExerciseView,
+    UserView, WeightLogView,
+    WorkoutLogView, WorkoutView,
+    ExerciseView, UserWorkoutPlanView,
+    WorkoutPlanView,
+    WorkoutPlanExerciseView,
     ExerciseMusclesWorkedView
 )
 from rest_framework import routers
 
 router = routers.DefaultRouter()
 router.register(r'users', UserView, 'user')
-router.register(r'workout-logs', WorkoutLogView, 'workout_log')
+router.register(r'weight-log', WeightLogView, 'weight_log')
+router.register(r'workout-log', WorkoutLogView, 'workout_log')
 router.register(r'workouts', WorkoutView, 'workout')
 router.register(r'exercises', ExerciseView, 'exercise')
 router.register(
-    r'user-workout-templates',
-    UserWorkoutTemplateView,
-    'user_workout_template'
+    r'user-workout-plans',
+    UserWorkoutPlanView,
+    'user_workout_plan'
 )
 router.register(
-    r'workout-templates',
-    WorkoutTemplateView,
-    'workout_template'
+    r'workout-plans',
+    WorkoutPlanView,
+    'workout_plan'
 )
 router.register(
-    r'workout-template-exercises',
-    WorkoutTemplateExerciseView,
-    'workout_template_exercise'
+    r'workout-plan-exercises',
+    WorkoutPlanExerciseView,
+    'workout_plan_exercise'
 )
 router.register(
     r'exercises-muscles-worked',

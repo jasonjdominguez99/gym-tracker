@@ -1,9 +1,9 @@
 from dataclasses import fields
 from rest_framework import serializers
 from .models import (
-    User, WorkoutLog, Workout, Exercise, 
-    UserWorkoutTemplate,
-    WorkoutTemplate, WorkoutTemplateExercise,
+    User, WeightLog, WorkoutLog, Workout,
+    Exercise, UserWorkoutPlan,
+    WorkoutPlan, WorkoutPlanExercise,
     ExerciseMusclesWorked
 )
 
@@ -18,17 +18,30 @@ class UserSerializer(serializers.ModelSerializer):
             'password',
             'sex'
         )
-        
+
+class WeightLogSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = WeightLog
+        fields = (
+            'user_id',
+            'date',
+            'weight',
+            'units',
+            'time',
+            'notes'
+        )
+
 class WorkoutLogSerializer(serializers.ModelSerializer):
     class Meta:
         model = WorkoutLog
         fields = (
-            'user_id',
-            'workout_template_id',
             'workout_id',
+            'name',
+            'user_id',
             'date',
             'start_time',
-            'end_time'
+            'end_time',
+            'notes'
         )
        
 class WorkoutSerializer(serializers.ModelSerializer):
@@ -39,7 +52,9 @@ class WorkoutSerializer(serializers.ModelSerializer):
             'exercise_id',
             'set_number',
             'weight',
-            'reps'
+            'units',
+            'reps',
+            'notes'
         )
 
 class ExerciseSerializer(serializers.ModelSerializer):
@@ -51,29 +66,32 @@ class ExerciseSerializer(serializers.ModelSerializer):
             'description'
         )
 
-class UserWorkoutTemplateSerializer(serializers.ModelSerializer):
+class UserWorkoutPlanSerializer(serializers.ModelSerializer):
     class Meta:
-        model = UserWorkoutTemplate
+        model = UserWorkoutPlan
         fields = (
-            'workout_template_id',
+            'workout_plan_id',
             'user_id'
         )
        
-class WorkoutTemplateSerializer(serializers.ModelSerializer):
+class WorkoutPlanSerializer(serializers.ModelSerializer):
     class Meta:
-        model = WorkoutTemplate
+        model = WorkoutPlan
         fields = (
-            'workout_template_id',
+            'workout_plan_id',
             'name',
             'description'
         )
         
-class WorkoutTemplateExerciseSerializer(serializers.ModelSerializer):
+class WorkoutPlanExerciseSerializer(serializers.ModelSerializer):
     class Meta:
-        model = WorkoutTemplateExercise
+        model = WorkoutPlanExercise
         fields = (
-            'workout_template_id',
-            'exercise_id'
+            'workout_plan_id',
+            'exercise_id',
+            'suggested_sets',
+            'suggested_reps_min',
+            'suggested_reps_max'
         )
         
 class ExerciseMusclesWorkedSerializer(serializers.ModelSerializer):
