@@ -28,6 +28,11 @@ function Navigation() {
                 </NavLink>
               </li>
               <li className="nav-item">
+                <NavLink className="nav-link" to="/weight-log">
+                  Weight Log
+                </NavLink>
+              </li>
+              <li className="nav-item">
                 <NavLink className="nav-link" to="/my-account">
                   My Account
                 </NavLink>
