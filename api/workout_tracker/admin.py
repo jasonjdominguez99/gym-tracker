@@ -85,6 +85,7 @@ class ExerciseMusclesWorkedAdmin(admin.ModelAdmin):
     )
 
 admin.site.register(User, UserAdmin)
+admin.site.register(WeightLog, WeightLogAdmin)
 admin.site.register(WorkoutLog, WorkoutLogAdmin)
 admin.site.register(Workout, WorkoutAdmin)
 admin.site.register(Exercise, ExerciseAdmin)
